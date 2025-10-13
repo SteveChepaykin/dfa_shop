@@ -1,0 +1,24 @@
+
+import 'package:dartz/dartz.dart';
+import 'package:dfa_shop/core/network/failure.dart';
+import 'package:dfa_shop/features/banners/data/data_source/banners_remote_data_source.dart';
+import 'package:dfa_shop/features/banners/domain/models/banner_model.dart';
+import 'package:dfa_shop/features/banners/domain/repository/banners_repository.dart';
+
+class BannersRepositoryImpl implements BannersRepository {
+  final BannersRemoteDataSource remoteDataSource;
+
+  BannersRepositoryImpl({required this.remoteDataSource});
+
+  @override
+  Future<Either<Failure, List<BannerModel>>> getBanners() async {
+    try {
+      final remoteBanners = await remoteDataSource.getBanners();
+      return Right(remoteBanners
+          .map((banner) => BannerModel(id: banner.id, image: banner.image,),)
+          .toList());
+    } catch (e) {
+      return Left(ServerFailure());
+    }
+  }
+}
