@@ -5,16 +5,20 @@ class ProductModel extends Equatable {
   final String image;
   final String name;
   final double price;
-  final String description;
+  final double salePrice;
+  final int unitValue;
+  final String unitString;
 
   const ProductModel({
     required this.id,
     required this.image,
     required this.name,
     required this.price,
-    required this.description,
+    required this.salePrice,
+    required this.unitValue,
+    required this.unitString,
   });
 
   @override
-  List<Object?> get props => [id, image, name, price, description];
+  List<Object?> get props => [id, image, name, price, salePrice, unitValue, unitString];
 }

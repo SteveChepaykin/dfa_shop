@@ -15,7 +15,7 @@ class StoriesRepositoryImpl implements StoriesRepository {
       final remoteStories = await remoteDataSource.getStories();
       return Right(remoteStories
           .map((story) =>
-              StoryModel(id: story.id, image: story.image, name: story.name,),)
+              StoryModel(id: story.id, image: story.preview_image, name: story.title,),)
           .toList());
     } catch (e) {
       return Left(ServerFailure());

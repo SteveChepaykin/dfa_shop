@@ -31,8 +31,6 @@ class ProductDetailsScreen extends StatelessWidget {
                     '\$${product.price}',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  const SizedBox(height: 16),
-                  Text(product.description),
                 ],
               ),
             ),

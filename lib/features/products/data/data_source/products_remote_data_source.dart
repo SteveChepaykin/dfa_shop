@@ -13,7 +13,7 @@ class ProductsRemoteDataSourceImpl implements ProductsRemoteDataSource {
   @override
   Future<List<ProductDataModel>> getProducts() async {
     final response = await dio.get('https://bxtest.dfa-media.ru/udachny/products.json');
-    return (response.data as List)
+    return (response.data['products'] as List)
         .map((json) => ProductDataModel.fromJson(json))
         .toList();
   }

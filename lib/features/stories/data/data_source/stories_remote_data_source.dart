@@ -13,7 +13,7 @@ class StoriesRemoteDataSourceImpl implements StoriesRemoteDataSource {
   @override
   Future<List<StoryDataModel>> getStories() async {
     final response = await dio.get('https://bxtest.dfa-media.ru/udachny/story.json');
-    return (response.data as List)
+    return (response.data['story'] as List)
         .map((json) => StoryDataModel.fromJson(json))
         .toList();
   }

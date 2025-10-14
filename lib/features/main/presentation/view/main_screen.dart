@@ -1,88 +1,119 @@
-import 'package:dfa_shop/features/product_details/presentation/view/product_details_screen.dart';
+import 'package:dfa_shop/features/banners/domain/models/banner_model.dart';
+import 'package:dfa_shop/features/main/presentation/bloc/main_screen_bloc.dart';
+import 'package:dfa_shop/features/main/presentation/view/widgets/banners.dart';
+import 'package:dfa_shop/features/main/presentation/view/widgets/products_row.dart';
+import 'package:dfa_shop/features/main/presentation/view/widgets/stories_row.dart';
+import 'package:dfa_shop/features/products/domain/models/product_model.dart';
+import 'package:dfa_shop/features/stories/domain/models/story_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({required this.bloc, super.key});
+
+  final MainScreenBloc bloc;
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  List<BannerModel> banners = [];
+  List<ProductModel> products = [];
+  List<StoryModel> stories = [];
+
+  String? errorMessage;
+
+  void _blocListener(BuildContext context, MainScreenState state) {
+    switch (state) {
+      case LoadingMainScreenState():
+        print('');
+
+      case LoadedMainScreenState():
+        banners = state.banners;
+        products = state.products;
+        stories = state.stories;
+
+      case ErrorMainScreenState():
+        errorMessage = state.message;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Shop')),
-      body: BlocConsumer<MainScreenEvent, MainScreenState>(
-        listener: (context, state) {
-          switch (state) {
-            case LoadingMainScreenState():
-              
-            case LoadedMainScreenState():
-          }
-        },
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leadingWidth: 80, // Adjust to fit "Анна" and avatar
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 18,
+                backgroundColor: Colors.grey[200],
+                child: Icon(Icons.person, color: Colors.grey[600]),
+              ),
+              SizedBox(width: 8),
+              Text(
+                'Анна',
+                style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.bookmark_border, color: Colors.black),
+            onPressed: () {},
+          ),
+          Stack(
+            children: [
+              IconButton(
+                icon: Icon(Icons.notifications_none, color: Colors.black),
+                onPressed: () {},
+              ),
+              Positioned(
+                right: 8,
+                top: 8,
+                child: Container(
+                  padding: EdgeInsets.all(2),
+                  decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(6)),
+                  constraints: BoxConstraints(minWidth: 12, minHeight: 12),
+                  child: Text(
+                    '2',
+                    style: TextStyle(color: Colors.white, fontSize: 8),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(width: 8),
+        ],
+      ),
+      body: BlocConsumer<MainScreenBloc, MainScreenState>(
+        bloc: widget.bloc,
+        listener: _blocListener,
         builder: (context, state) {
-          if (state is LoadingMainScreenState) {
+          if (state is LoadingMainScreenState || state is InitialMainScreenState) {
             return const Center(child: CircularProgressIndicator());
-          } else {
+          }
           return SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Stories
-                SizedBox(
-                  height: 120,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: provider.stories.length,
-                    itemBuilder: (context, index) {
-                      final story = provider.stories[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            CircleAvatar(backgroundImage: NetworkImage(story.image), radius: 40),
-                            const SizedBox(height: 8),
-                            Text(story.name),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 200,
-                  child: PageView.builder(
-                    itemCount: provider.banners.length,
-                    itemBuilder: (context, index) {
-                      final banner = provider.banners[index];
-                      return Image.network(banner.image, fit: BoxFit.cover);
-                    },
-                  ),
-                ),
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.75),
-                  itemCount: provider.products.length,
-                  itemBuilder: (context, index) {
-                    final product = provider.products[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: product)));
-                      },
-                      child: Card(
-                        child: Column(
-                          children: [
-                            Expanded(child: Image.network(product.image, fit: BoxFit.cover)),
-                            Text(product.name),
-                            Text('\$${product.price.toStringAsFixed(2)}'),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                StoriesRow(stories: stories,),
+                Banners(banners: banners),
+                ProductsRow(products: products),
+                SizedBox(height: 20),
               ],
             ),
           );
-        },}
+        },
       ),
     );
   }
 }
+

@@ -15,7 +15,7 @@ class BannersRepositoryImpl implements BannersRepository {
     try {
       final remoteBanners = await remoteDataSource.getBanners();
       return Right(remoteBanners
-          .map((banner) => BannerModel(id: banner.id, image: banner.image,),)
+          .map((banner) => BannerModel(id: banner.id, image: banner.image, link: banner.link,),)
           .toList());
     } catch (e) {
       return Left(ServerFailure());

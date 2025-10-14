@@ -17,9 +17,12 @@ class ProductsRepositoryImpl implements ProductsRepository {
           .map((product) => ProductModel(
               id: product.id,
               image: product.image,
-              name: product.name,
+              name: product.title,
               price: product.price,
-              description: product.description))
+              salePrice: product.sale_price ?? 0,
+              unitValue: product.unit,
+              unitString: product.unit_text,
+          ))
           .toList());
     } catch (e) {
       return Left(ServerFailure());

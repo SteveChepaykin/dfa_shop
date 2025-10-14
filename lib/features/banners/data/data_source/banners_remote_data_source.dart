@@ -13,7 +13,7 @@ class BannersRemoteDataSourceImpl implements BannersRemoteDataSource {
   @override
   Future<List<BannerDataModel>> getBanners() async {
     final response = await dio.get('https://bxtest.dfa-media.ru/udachny/banners.json');
-    return (response.data as List)
+    return (response.data['banners'] as List)
         .map((json) => BannerDataModel.fromJson(json))
         .toList();
   }

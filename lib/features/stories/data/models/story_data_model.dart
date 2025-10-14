@@ -1,36 +1,42 @@
+import 'package:dfa_shop/core/utils/hive_types.dart';
+import 'package:dfa_shop/features/stories/data/models/content_data_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hive_ce/hive.dart';
 
 part 'story_data_model.freezed.dart';
 part 'story_data_model.g.dart';
 
 @freezed
+@JsonSerializable()
+@HiveType(typeId: HiveTypeIds.storyHive)
 class StoryDataModel with _$StoryDataModel {
-  const factory StoryDataModel({
-    required int id,
-    required String image,
-    required String name,
-  }) = _StoryDataModel;
+  StoryDataModel({
+    required this.id,
+    required this.preview_image,
+    required this.viewed,
+    required this.is_bookmark,
+    required this.position,
+    required this.title,
+    required this.slides,
+  });
 
-  const StoryDataModel._();
+  @HiveField(0)
+  final int id;
+  @HiveField(1)
+  final String preview_image;
+  @HiveField(2)
+  final bool viewed;
+  @HiveField(3)
+  final bool is_bookmark;
+  @HiveField(4)
+  final String position;
+  @HiveField(5)
+  final String title;
+  @HiveField(6)
+  final List<ContentDataModel> slides;
 
   factory StoryDataModel.fromJson(Map<String, dynamic> json) =>
       _$StoryDataModelFromJson(json);
-      
-        @override
-        // TODO: implement id
-        int get id => throw UnimplementedError();
-      
-        @override
-        // TODO: implement image
-        String get image => throw UnimplementedError();
-      
-        @override
-        // TODO: implement name
-        String get name => throw UnimplementedError();
-      
-        @override
-        Map<String, dynamic> toJson() {
-          // TODO: implement toJson
-          throw UnimplementedError();
-        }
+
+  Map<String, dynamic> toJson() => _$StoryDataModelToJson(this);
 }
