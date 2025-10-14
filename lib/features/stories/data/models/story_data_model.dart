@@ -20,18 +20,25 @@ class StoryDataModel with _$StoryDataModel {
     required this.slides,
   });
 
+  @override
   @HiveField(0)
   final int id;
+  @override
   @HiveField(1)
   final String preview_image;
+  @override
   @HiveField(2)
   final bool viewed;
+  @override
   @HiveField(3)
   final bool is_bookmark;
+  @override
   @HiveField(4)
   final String position;
+  @override
   @HiveField(5)
   final String title;
+  @override
   @HiveField(6)
   final List<ContentDataModel> slides;
 

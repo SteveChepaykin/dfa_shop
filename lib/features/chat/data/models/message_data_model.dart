@@ -16,12 +16,16 @@ class MessageDataModel with _$MessageDataModel {
     required this.timestamp,
   });
 
+  @override
   @HiveField(0)
   final int id;
+  @override
   @HiveField(1)
   final String message;
+  @override
   @HiveField(2)
   final String senderId;
+  @override
   @HiveField(3)
   final DateTime timestamp;
 

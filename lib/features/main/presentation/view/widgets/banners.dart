@@ -1,4 +1,6 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dfa_shop/features/banners/domain/models/banner_model.dart';
+import 'package:dfa_shop/features/main/presentation/view/widgets/banner_item.dart';
 import 'package:flutter/material.dart';
 
 class Banners extends StatefulWidget {
@@ -11,46 +13,40 @@ class Banners extends StatefulWidget {
 }
 
 class _BannersState extends State<Banners> {
+  int _bannerIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Container(
-            height: 180,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.redAccent, // Placeholder color
-              borderRadius: BorderRadius.circular(12),
-              image: DecorationImage(
-                // You'll replace this with an actual image asset
-                image: NetworkImage(
-                  'https://images.unsplash.com/photo-1588265780516-724e527b14d8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                ), // Example image
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Сезон\nклубники',
-                    style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
+          padding: const EdgeInsets.only(top: 8, bottom: 8),
+          child: widget.banners.isNotEmpty
+              ? CarouselSlider(
+                  items: [...widget.banners.map((ban) => BannerItem(banner: ban))],
+                  options: CarouselOptions(
+                    height: 180,
+                    enlargeStrategy: CenterPageEnlargeStrategy.height,
+                    enableInfiniteScroll: true,
+                    enlargeCenterPage: false,
+                    autoPlay: false,
+                    viewportFraction: 0.9,
+                    onPageChanged: (index, _) {
+                      setState(() {
+                        _bannerIndex = index;
+                      });
+                    },
                   ),
-                  SizedBox(height: 8),
-                  Text('Прямо с фермы к столу', style: TextStyle(color: Colors.white, fontSize: 16)),
-                ],
-              ),
-            ),
-          ),
+                )
+              : const SizedBox.shrink(),
         ),
-        SizedBox(height: 10),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [_buildPageIndicator(true), _buildPageIndicator(false), _buildPageIndicator(false)]),
-        SizedBox(height: 20),
+        if(widget.banners.isNotEmpty) SizedBox(height: 10),
+        if(widget.banners.isNotEmpty) Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          ...widget.banners.indexed.map(
+            (i) => _buildPageIndicator(i.$1 == _bannerIndex),
+          ),
+        ]),
+        if(widget.banners.isNotEmpty) SizedBox(height: 20),
       ],
     );
   }

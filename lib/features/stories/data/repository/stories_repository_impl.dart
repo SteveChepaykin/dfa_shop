@@ -1,13 +1,15 @@
 import 'package:dartz/dartz.dart';
 import 'package:dfa_shop/core/network/failure.dart';
+import 'package:dfa_shop/features/stories/data/data_source/stories_local_data_source.dart';
 import 'package:dfa_shop/features/stories/data/data_source/stories_remote_data_source.dart';
 import 'package:dfa_shop/features/stories/domain/models/story_model.dart';
 import 'package:dfa_shop/features/stories/domain/repository/stories_repository.dart';
 
 class StoriesRepositoryImpl implements StoriesRepository {
   final StoriesRemoteDataSource remoteDataSource;
+  final StoriesLocalDataSource localDataSource;
 
-  StoriesRepositoryImpl({required this.remoteDataSource});
+  StoriesRepositoryImpl({required this.remoteDataSource, required this.localDataSource,});
 
   @override
   Future<Either<Failure, List<StoryModel>>> getStories() async {
@@ -18,7 +20,15 @@ class StoriesRepositoryImpl implements StoriesRepository {
               StoryModel(id: story.id, image: story.preview_image, name: story.title,),)
           .toList());
     } catch (e) {
-      return Left(ServerFailure());
+      try {
+        final localProducts = await localDataSource.getStories();
+        return Right(localProducts
+            .map((story) =>
+              StoryModel(id: story.id, image: story.preview_image, name: story.title,),)
+          .toList());
+      } catch (e) {
+        return Left(ServerFailure());
+      }
     }
   }
 }

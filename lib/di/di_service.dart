@@ -1,3 +1,4 @@
+import 'package:dfa_shop/features/banners/data/data_source/banners_local_data_source.dart';
 import 'package:dfa_shop/features/banners/data/data_source/banners_remote_data_source.dart';
 import 'package:dfa_shop/features/banners/data/repository/banners_repository_impl.dart';
 import 'package:dfa_shop/features/banners/domain/repository/banners_repository.dart';
@@ -9,24 +10,30 @@ import 'package:dfa_shop/features/chat/domain/use_cases/get_messages_stream_use_
 import 'package:dfa_shop/features/chat/domain/use_cases/send_message_use_case.dart';
 import 'package:dfa_shop/features/chat/presentation/bloc/chat_screen_bloc.dart';
 import 'package:dfa_shop/features/main/presentation/bloc/main_screen_bloc.dart';
+import 'package:dfa_shop/features/products/data/data_source/products_local_data_source.dart';
 import 'package:dfa_shop/features/products/data/data_source/products_remote_data_source.dart';
 import 'package:dfa_shop/features/products/data/repository/products_repository_impl.dart';
 import 'package:dfa_shop/features/products/domain/repository/products_repository.dart';
 import 'package:dfa_shop/features/products/domain/use_cases/get_all_products_use_case.dart';
+import 'package:dfa_shop/features/stories/data/data_source/stories_local_data_source.dart';
 import 'package:dfa_shop/features/stories/data/data_source/stories_remote_data_source.dart';
 import 'package:dfa_shop/features/stories/data/repository/stories_repository_impl.dart';
 import 'package:dfa_shop/features/stories/domain/repository/stories_repository.dart';
 import 'package:dfa_shop/features/stories/domain/use_cases/get_all_stories_use_case.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_ce/hive.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
   // External
   sl.registerLazySingleton(() => Dio());
+  // Internal
+  sl.registerLazySingleton<HiveInterface>(() => Hive);
 
   // Data sources
+  // Remote
   sl.registerLazySingleton<BannersRemoteDataSource>(
     () => BannersRemoteDataSourceImpl(dio: sl<Dio>()),
   );
@@ -39,16 +46,35 @@ Future<void> init() async {
   sl.registerLazySingleton<ChatRemoteDataSource>(
     () => ChatRemoteDataSourceImpl(),
   );
+  // Local
+  sl.registerLazySingleton<BannersLocalDataSource>(
+    () => BannersLocalDataSourceImpl(sl<HiveInterface>()),
+  );
+  sl.registerLazySingleton<ProductsLocalDataSource>(
+    () => ProductsLocalDataSourceImpl(sl<HiveInterface>()),
+  );
+  sl.registerLazySingleton<StoriesLocalDataSource>(
+    () => StoriesLocalDataSourceImpl(sl<HiveInterface>()),
+  );
 
   // Repository
   sl.registerLazySingleton<BannersRepository>(
-    () => BannersRepositoryImpl(remoteDataSource: sl<BannersRemoteDataSource>()),
+    () => BannersRepositoryImpl(
+      remoteDataSource: sl<BannersRemoteDataSource>(),
+      localDataSource: sl<BannersLocalDataSource>(),
+    ),
   );
   sl.registerLazySingleton<ProductsRepository>(
-    () => ProductsRepositoryImpl(remoteDataSource: sl<ProductsRemoteDataSource>()),
+    () => ProductsRepositoryImpl(
+      remoteDataSource: sl<ProductsRemoteDataSource>(),
+      localDataSource: sl<ProductsLocalDataSource>(),
+    ),
   );
   sl.registerLazySingleton<StoriesRepository>(
-    () => StoriesRepositoryImpl(remoteDataSource: sl<StoriesRemoteDataSource>()),
+    () => StoriesRepositoryImpl(
+      remoteDataSource: sl<StoriesRemoteDataSource>(),
+      localDataSource: sl<StoriesLocalDataSource>(),
+    ),
   );
   sl.registerLazySingleton<ChatRepository>(
     () => ChatRepositoryImpl(remoteDataSource: sl<ChatRemoteDataSource>()),

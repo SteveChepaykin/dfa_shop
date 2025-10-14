@@ -20,20 +20,28 @@ class ContentDataModel with _$ContentDataModel {
     required this.is_button,
   });
 
+  @override
   @HiveField(0)
   final int id;
+  @override
   @HiveField(1)
   final String image;
+  @override
   @HiveField(2)
   final String pre_title;
+  @override
   @HiveField(3)
   final String title;
+  @override
   @HiveField(4)
   final String text;
+  @override
   @HiveField(5)
   final String button_link;
+  @override
   @HiveField(6)
   final String text_position;
+  @override
   @HiveField(7)
   final bool is_button;
 

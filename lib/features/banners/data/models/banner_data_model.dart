@@ -15,10 +15,13 @@ class BannerDataModel with _$BannerDataModel {
     required this.link,
   });
 
+  @override
   @HiveField(0)
   final int id;
+  @override
   @HiveField(1)
   final String image;
+  @override
   @HiveField(2)
   final String link;
 

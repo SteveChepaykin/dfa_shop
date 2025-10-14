@@ -19,18 +19,25 @@ class ProductDataModel with _$ProductDataModel {
     required this.unit_text,
   });
 
+  @override
   @HiveField(0)
   final int id;
+  @override
   @HiveField(1)
   final String image;
+  @override
   @HiveField(2)
   final String title;
+  @override
   @HiveField(3)
   final double price;
+  @override
   @HiveField(4)
   final double? sale_price;
+  @override
   @HiveField(5)
   final int unit;
+  @override
   @HiveField(6)
   final String unit_text;
 
