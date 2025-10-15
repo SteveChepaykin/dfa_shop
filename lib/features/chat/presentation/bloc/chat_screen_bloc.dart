@@ -21,9 +21,11 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
     on<NewMessageChatScreenEvent>(_onNewMessageChatScreenEvent);
     on<ErrorChatScreenEvent>(_onErrorChatScreenEvent);
 
-    _webSocketSubscription = _getMessagesStreamUseCase.call(NoParams()).listen((messages) {
-      add(NewMessageChatScreenEvent(messages: messages));
+    _webSocketSubscription = _getMessagesStreamUseCase.call(NoParams()).listen((message) {
+      add(NewMessageChatScreenEvent(message: message));
     });
+
+    add(InitializeChatScreenEvent());
   }
 
   final GetMessagesStreamUseCase _getMessagesStreamUseCase;
@@ -33,18 +35,25 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
 
   List<MessageModel> messages = [];
 
-  FutureOr<void> _onInitializeChatScreenEvent(InitializeChatScreenEvent event, Emitter<ChatScreenState> emit) {}
+  FutureOr<void> _onInitializeChatScreenEvent(InitializeChatScreenEvent event, Emitter<ChatScreenState> emit) {
+    emit(LoadedChatScreenState(messages: messages));
+  }
 
   FutureOr<void> _onLoadChatScreenEvent(LoadChatScreenEvent event, Emitter<ChatScreenState> emit) {
     emit(LoadedChatScreenState(messages: messages));
   }
 
   FutureOr<void> _onSendMessageChatScreenEvent(SendMessageChatScreenEvent event, Emitter<ChatScreenState> emit) async {
-    var sentResult = await _sendMessageUseCase.call(SendMessageParams(
+    //для простоты локального отображения отосланного сообщения. Сервер видит и то и другое.
+    final ts = DateTime.now();
+    final params = SendMessageParams(
       message: event.message,
-      senderId: (messages.length % 2).toString(),
-      time: DateTime.now(),
-    ));
+      senderId: 10001.toString(),
+      time: ts,
+    );
+    messages.add(MessageModel(id: params.hashCode, message: event.message, senderId: 10001.toString(), timestamp: ts));
+
+    var sentResult = await _sendMessageUseCase.call(params);
     sentResult.fold(
       (f) {
         add(ErrorChatScreenEvent(f.toString()));
@@ -54,7 +63,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
   }
 
   FutureOr<void> _onNewMessageChatScreenEvent(NewMessageChatScreenEvent event, Emitter<ChatScreenState> emit) {
-    messages = event.messages;
+    messages.add(event.message);
     emit(LoadedChatScreenState(messages: messages));
   }
 

@@ -15,16 +15,17 @@ class StoriesRepositoryImpl implements StoriesRepository {
   Future<Either<Failure, List<StoryModel>>> getStories() async {
     try {
       final remoteStories = await remoteDataSource.getStories();
+      await localDataSource.cacheStories(remoteStories);
       return Right(remoteStories
           .map((story) =>
-              StoryModel(id: story.id, image: story.preview_image, name: story.title,),)
+              StoryModel(id: story.id, image: story.preview_image, name: story.title, isSeen: story.viewed),)
           .toList());
     } catch (e) {
       try {
-        final localProducts = await localDataSource.getStories();
-        return Right(localProducts
+        final localStories = await localDataSource.getStories();
+        return Right(localStories
             .map((story) =>
-              StoryModel(id: story.id, image: story.preview_image, name: story.title,),)
+              StoryModel(id: story.id, image: story.preview_image, name: story.title, isSeen: story.viewed),)
           .toList());
       } catch (e) {
         return Left(ServerFailure());

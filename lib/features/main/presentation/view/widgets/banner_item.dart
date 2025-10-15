@@ -9,9 +9,9 @@ class BannerItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 13),
       child: Container(
-        height: 180,
+        height: 144,
         width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.redAccent, // Placeholder color
@@ -19,20 +19,6 @@ class BannerItem extends StatelessWidget {
           image: DecorationImage(
             image: NetworkImage(banner.image),
             fit: BoxFit.cover,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Сезон\nклубники',
-                style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
-              Text('Прямо с фермы к столу', style: TextStyle(color: Colors.white, fontSize: 16)),
-            ],
           ),
         ),
       ),

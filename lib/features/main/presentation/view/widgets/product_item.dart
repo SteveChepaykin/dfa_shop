@@ -1,5 +1,8 @@
+import 'package:dfa_shop/core/utils/app_theme.dart';
+import 'package:dfa_shop/features/product_details/presentation/view/product_details_screen.dart';
 import 'package:dfa_shop/features/products/domain/models/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ProductItem extends StatelessWidget {
   const ProductItem({required this.product, super.key});
@@ -8,57 +11,36 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 160,
-      margin: EdgeInsets.only(left: 16.0, right: 8.0, bottom: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.grey.withAlpha(25), spreadRadius: 1, blurRadius: 5, offset: Offset(0, 3))],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-            child: Image.network(product.image, height: 120, width: double.infinity, fit: BoxFit.cover),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetailsScreen(product: product)));
+        },
+        child: Container(
+          width: 114,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(product.image, height: 114, width: double.infinity, fit: BoxFit.cover),
+              ),
+              SizedBox(height: 5),
+              Text(product.name, style: AppTheme.s10w400, maxLines: 3, overflow: TextOverflow.ellipsis),
+              SizedBox(height: 5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('${product.price.toString()}/${product.unitString}', style: AppTheme.s12w400.copyWith(color: AppTheme.primary)),
+                  SvgPicture.asset('assets/svg/add-to-cart-button.svg', width: 32, height: 32, colorFilter: ColorFilter.mode(Colors.transparent, BlendMode.plus)),
+                ],
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  product.name,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                // SizedBox(height: 4),
-                // Text(
-                //   product.,
-                //   style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                //   maxLines: 1,
-                //   overflow: TextOverflow.ellipsis,
-                // ),
-                SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      product.price.toString(),
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(color: Colors.red, borderRadius: BorderRadius.circular(8)),
-                      child: Icon(Icons.add, color: Colors.white, size: 20),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -15,6 +15,7 @@ class ProductsRepositoryImpl implements ProductsRepository {
   Future<Either<Failure, List<ProductModel>>> getProducts() async {
     try {
       final remoteProducts = await remoteDataSource.getProducts();
+      await localDataSource.cacheProducts(remoteProducts);
       return Right(
         remoteProducts
             .map(
@@ -36,17 +37,17 @@ class ProductsRepositoryImpl implements ProductsRepository {
         return Right(
           localProducts
               .map(
-              (product) => ProductModel(
-                id: product.id,
-                image: product.image,
-                name: product.title,
-                price: product.price,
-                salePrice: product.sale_price ?? 0,
-                unitValue: product.unit,
-                unitString: product.unit_text,
-              ),
-            )
-            .toList(),
+                (product) => ProductModel(
+                  id: product.id,
+                  image: product.image,
+                  name: product.title,
+                  price: product.price,
+                  salePrice: product.sale_price ?? 0,
+                  unitValue: product.unit,
+                  unitString: product.unit_text,
+                ),
+              )
+              .toList(),
         );
       } catch (e) {
         return Left(ServerFailure());

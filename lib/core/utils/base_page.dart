@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
 
 abstract class BasePage {
-  Widget getScreen();
+  Widget get getScreen;
 }

@@ -1,16 +1,27 @@
 # dfa_shop
 
-A new Flutter project.
+A test Flutter project for DFA Media company.
 
 ## Getting Started
+first, run:
 
-This project is a starting point for a Flutter application.
+``` dart pub get ```
 
-A few resources to get you started if this is your first Flutter project:
+then, generate all necessities with:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+``` dart run build_runner build --delete-conflicting-outputs ```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+and you are good to go!
+
+## Launch the app
+the app consists of a WebSocket server (located in /server) and the mobile app (located in /lib).
+If you are launching on an emulator, you should launch the server first do it with:
+
+``` dart run server/message_server.dart ```
+
+otherwise it wont work as fully intended.
+and then launch flutter app using standart command:
+
+``` flutter run ```
+
+Dont` forget to connect your emulator/device!

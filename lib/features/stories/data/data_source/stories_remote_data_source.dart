@@ -1,3 +1,4 @@
+import 'package:dfa_shop/core/utils/constants.dart';
 import 'package:dfa_shop/features/stories/data/models/story_data_model.dart';
 import 'package:dio/dio.dart';
 
@@ -12,7 +13,7 @@ class StoriesRemoteDataSourceImpl implements StoriesRemoteDataSource {
 
   @override
   Future<List<StoryDataModel>> getStories() async {
-    final response = await dio.get('https://bxtest.dfa-media.ru/udachny/story.json');
+    final response = await dio.get(Constants.storiesUrl);
     return (response.data['story'] as List)
         .map((json) => StoryDataModel.fromJson(json))
         .toList();

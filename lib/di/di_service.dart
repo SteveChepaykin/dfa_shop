@@ -1,3 +1,5 @@
+import 'package:dfa_shop/core/network/interceptors.dart';
+import 'package:dfa_shop/core/utils/constants.dart';
 import 'package:dfa_shop/features/banners/data/data_source/banners_local_data_source.dart';
 import 'package:dfa_shop/features/banners/data/data_source/banners_remote_data_source.dart';
 import 'package:dfa_shop/features/banners/data/repository/banners_repository_impl.dart';
@@ -21,14 +23,18 @@ import 'package:dfa_shop/features/stories/data/repository/stories_repository_imp
 import 'package:dfa_shop/features/stories/domain/repository/stories_repository.dart';
 import 'package:dfa_shop/features/stories/domain/use_cases/get_all_stories_use_case.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce/hive.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
   // External
-  sl.registerLazySingleton(() => Dio());
+  sl.registerLazySingleton(() => Dio()..interceptors.add(DioCacheInterceptor(options: options)));
+  final channel = WebSocketChannel.connect(Uri.parse(Constants.webSocketUrl));
+  await channel.ready;
   // Internal
   sl.registerLazySingleton<HiveInterface>(() => Hive);
 
@@ -44,7 +50,10 @@ Future<void> init() async {
     () => StoriesRemoteDataSourceImpl(dio: sl<Dio>()),
   );
   sl.registerLazySingleton<ChatRemoteDataSource>(
-    () => ChatRemoteDataSourceImpl(),
+    () {
+      // final channel = null;
+      return ChatRemoteDataSourceImpl(messagesChannel: channel);
+    }
   );
   // Local
   sl.registerLazySingleton<BannersLocalDataSource>(

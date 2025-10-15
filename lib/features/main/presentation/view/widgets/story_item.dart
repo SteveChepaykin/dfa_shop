@@ -1,3 +1,4 @@
+import 'package:dfa_shop/core/utils/app_theme.dart';
 import 'package:dfa_shop/features/stories/domain/models/story_model.dart';
 import 'package:flutter/material.dart';
 
@@ -9,17 +10,31 @@ class StoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100,
-      margin: EdgeInsets.symmetric(horizontal: 8.0),
+      width: 80,
+      margin: EdgeInsets.only(right: 5),
       child: Column(
         children: [
           CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.grey[200], // Adjust color as needed
-            child: Icon(Icons.person, color: Colors.grey[600], size: 30),
+            radius: 33.5,
+            backgroundColor: story.isSeen ? Colors.transparent : AppTheme.grey,
+            child: CircleAvatar(
+              radius: 32.5,
+              backgroundColor: AppTheme.bg,
+              child: CircleAvatar(
+                radius: 31,
+                backgroundColor: Colors.grey[200],
+                child: Image.network(story.image),
+              ),
+            ),
           ),
-          SizedBox(height: 8),
-          Text(story.name, textAlign: TextAlign.center, style: TextStyle(fontSize: 12), maxLines: 2, overflow: TextOverflow.ellipsis),
+          SizedBox(height: 5),
+          Text(
+            story.name, 
+            textAlign: TextAlign.center, 
+            style: AppTheme.s10w400.copyWith(height: 1.2), 
+            maxLines: 3, 
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       ),
     );

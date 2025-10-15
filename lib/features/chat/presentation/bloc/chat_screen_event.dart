@@ -13,9 +13,9 @@ class SendMessageChatScreenEvent extends ChatScreenEvent {
 }
 
 class NewMessageChatScreenEvent extends ChatScreenEvent {
-  NewMessageChatScreenEvent({required this.messages});
+  NewMessageChatScreenEvent({required this.message});
 
-  final List<MessageModel> messages;
+  final MessageModel message;
 }
 
 class ErrorChatScreenEvent extends ChatScreenEvent {

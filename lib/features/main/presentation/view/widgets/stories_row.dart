@@ -10,9 +10,9 @@ class StoriesRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      padding: const EdgeInsets.only(left: 13.0),
       child: SizedBox(
-        height: 120, // Height for category items
+        height: 108,
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: [
