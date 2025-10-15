@@ -27,8 +27,8 @@ class AppTheme {
         brightness: Brightness.light,
         primary: primary,
         onPrimary: Colors.white,
-        secondary: grey,
-        onSecondary: Colors.white,
+        secondary: Colors.white,
+        onSecondary: grey,
         error: Colors.red,
         onError: Colors.white,
         surface: bg,
@@ -45,9 +45,9 @@ class AppTheme {
       scaffoldBackgroundColor: Color(0xFF121212),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
-        foregroundColor: Color(0xFFE0E0E0),
+        foregroundColor: darkText,
         elevation: 0,
-        titleTextStyle: s16w500.copyWith(color: Color(0xFFE0E0E0)),
+        titleTextStyle: s16w500.copyWith(color: darkText),
         leadingWidth: 40,
       ),
       bottomAppBarTheme: BottomAppBarThemeData(
