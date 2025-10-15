@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static Color primary = Color(0xFFE50D32);
   static Color grey = Color(0xFF1F2029);
+  static Color darkGrey = Color(0xFF808080);
   static Color lightGrey = Color(0xFFBEBFC8);
   static Color bg = Color(0xFFF2F3F8);
 
@@ -40,6 +41,30 @@ class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData(
       brightness: Brightness.dark,
+      scaffoldBackgroundColor: Color(0xFF121212),
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Color(0xFFE0E0E0),
+        elevation: 0,
+        titleTextStyle: s16w500.copyWith(color: Color(0xFFE0E0E0)),
+        leadingWidth: 40,
+      ),
+      bottomAppBarTheme: BottomAppBarThemeData(
+        color: Color(0xFF1F1F1F),
+        height: 80,
+        elevation: 1,
+      ),
+      colorScheme: ColorScheme(
+        brightness: Brightness.dark,
+        primary: primary,
+        onPrimary: Colors.white,
+        secondary: darkGrey,
+        onSecondary: Colors.white,
+        error: Colors.red,
+        onError: Colors.white,
+        surface: Color(0xFF121212),
+        onSurface: darkGrey,
+      ),
       fontFamily: 'Stolzl',
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );

@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildBottomBarItem({required int index, required String iconPath, required String label}) {
     bool isActive = index == _selectedIndex;
-    Color currentColor = isActive ? AppTheme.primary : AppTheme.grey;
+    Color currentColor = isActive ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.secondary;
     return GestureDetector(
       onTap: () => _onItemTapped(index),
       child: Column(
