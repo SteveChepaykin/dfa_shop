@@ -6,6 +6,7 @@ class AppTheme {
   static Color darkGrey = Color(0xFF808080);
   static Color lightGrey = Color(0xFFBEBFC8);
   static Color bg = Color(0xFFF2F3F8);
+  static Color darkText = Color(0xFFE0E0E0);
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -59,11 +60,11 @@ class AppTheme {
         primary: primary,
         onPrimary: Colors.white,
         secondary: darkGrey,
-        onSecondary: Colors.white,
+        onSecondary: darkText,
         error: Colors.red,
         onError: Colors.white,
         surface: Color(0xFF121212),
-        onSurface: darkGrey,
+        onSurface: darkText,
       ),
       fontFamily: 'Stolzl',
       visualDensity: VisualDensity.adaptivePlatformDensity,

@@ -35,7 +35,15 @@ class ProductItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('${product.price.toString()}/${product.unitString}', style: AppTheme.s12w400.copyWith(color: AppTheme.primary)),
-                  SvgPicture.asset('assets/svg/add-to-cart-button.svg', width: 32, height: 32, colorFilter: ColorFilter.mode(Colors.transparent, BlendMode.plus)),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(
+                      'assets/svg/add-to-cart-button.svg',
+                      width: 16,
+                      height: 16,
+                      colorFilter: ColorFilter.mode(AppTheme.primary, BlendMode.srcIn),
+                    ),
+                  ),
                 ],
               ),
             ],

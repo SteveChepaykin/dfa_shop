@@ -33,8 +33,13 @@ final sl = GetIt.instance;
 Future<void> init() async {
   // External
   sl.registerLazySingleton(() => Dio()..interceptors.add(DioCacheInterceptor(options: options)));
-  final channel = WebSocketChannel.connect(Uri.parse(Constants.webSocketUrl));
-  await channel.ready;
+  WebSocketChannel? channel;
+  try {
+    channel = WebSocketChannel.connect(Uri.parse(Constants.webSocketUrl));
+    channel.ready;
+  } catch(e) {
+    channel = null;
+  }
   // Internal
   sl.registerLazySingleton<HiveInterface>(() => Hive);
 

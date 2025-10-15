@@ -46,16 +46,30 @@ class _MainScreenState extends State<MainScreen> {
           padding: const EdgeInsets.only(left: 16.0),
           child: Row(
             children: [
-              SvgPicture.asset('assets/svg/profile_person.svg', width: 22, height: 22),
+              SvgPicture.asset(
+                'assets/svg/profile_person.svg',
+                width: 22,
+                height: 22,
+                colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.onSecondary, BlendMode.srcIn),
+              ),
             ],
           ),
         ),
-        title: Text('Анна',),
+        title: Text('Анна'),
         actions: [
-          IconButton(icon: SvgPicture.asset('assets/svg/bookmark_icon.svg'), onPressed: () {}),
+          IconButton(
+            icon: SvgPicture.asset('assets/svg/bookmark_icon.svg', colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.onSecondary, BlendMode.srcIn)),
+            onPressed: () {},
+          ),
           Stack(
             children: [
-              IconButton(icon: SvgPicture.asset('assets/svg/notif_bell_icon.svg'), onPressed: () {}),
+              IconButton(
+                icon: SvgPicture.asset(
+                  'assets/svg/notif_bell_icon.svg',
+                  colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.onSecondary, BlendMode.srcIn),
+                ),
+                onPressed: () {},
+              ),
               Positioned(
                 right: 8,
                 top: 8,

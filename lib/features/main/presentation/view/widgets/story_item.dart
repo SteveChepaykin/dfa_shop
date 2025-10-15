@@ -16,13 +16,13 @@ class StoryItem extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 33.5,
-            backgroundColor: story.isSeen ? Colors.transparent : AppTheme.grey,
+            backgroundColor: story.isSeen ? Colors.transparent : Theme.of(context).colorScheme.onSurface,
             child: CircleAvatar(
               radius: 32.5,
-              backgroundColor: AppTheme.bg,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               child: CircleAvatar(
                 radius: 31,
-                backgroundColor: Colors.grey[200],
+                backgroundColor: Theme.of(context).colorScheme.secondary,
                 child: Image.network(story.image),
               ),
             ),
